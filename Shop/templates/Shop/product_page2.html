@@ -1,0 +1,94 @@
+{% extends 'Shop/basic.html' %}
+
+{% block title %}Product{% endblock %}
+
+{% block css %}
+<style>
+    .col md-2{
+    flex: 1 0 0%;
+    padding: 1rem 1rem;
+    max-height: 209px;
+    max-width: 200%;
+    }
+    #product_image{
+    max-width: 100%;
+    max-height: 100px;
+    }
+    img{
+    vertical-align: middle;
+    max-height: 424px;
+    max-width: 100%;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col md-2 id=prodcut_image">
+               <img src="/media/{{product.0.Product_image}}">
+            </div>
+             <div class="col md-2">
+                 <h3>{{product.0.Product_name}}</h3>
+                 <h5>M.R.P: &#x20B9;{{product.0.Product_price}} .inr</h5>
+                 <p>{{product.0.description}}</p>
+                 <div class="add-cart">
+                        <button type="submit" class="btn btn-primary cart" id="pr{{product.0.Product_id}}" data-bs-toggle="button" >Add to Cart</button>
+                </div>
+                <div class="buy">
+                        <button type="submit" class="btn btn-primary" data-bs-toggle="button" autocomplete="off">Buy Now</button>
+                 </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %} 
+<script>
+    // we target the button by its class name.
+    var addCart=document.getElementsByClassName('btn btn-primary cart')
+
+     
+    for(let i=0;i<addCart.length;i++){
+        //  this line run when the add to cart button is click.
+        addCart[i].addEventListener('click',function(){
+            var idstr=addCart[i].id;
+            let product_items=[{
+                'name':'{{product.0.Product_name}}',
+                'price':'{{product.0.Product_price}}', 
+                'id':idstr,
+                'quantity':1
+            }];
+           
+           let product_count=JSON.parse(localStorage.getItem('product_count'));
+           
+           if(product_count){
+                // product_count.push(idstr);
+                if(update_product_count(product_count,idstr)){
+                    localStorage.setItem('product_count',JSON.stringify(product_count)); 
+                }
+                else{
+                    product_count.push({'name':'{{product.0.Product_name}}','price':'{{product.0.Product_price}}','id':idstr,'quantity':1});
+                    localStorage.setItem('product_count',JSON.stringify(product_count));
+                }  
+           }
+           else{
+                localStorage.setItem('product_count',JSON.stringify(product_items));
+           }
+
+        });
+    }
+    
+     
+    function update_product_count(product_count,idstr){
+         
+        for(let k in product_count){
+            if(product_count[k].id==idstr){
+                product_count[k].quantity=product_count[k].quantity+1;
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    </script>
+{%endblock%}

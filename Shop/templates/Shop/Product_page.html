@@ -1,0 +1,112 @@
+{% extends 'Shop/basic.html' %}
+
+{% block title %}Product{% endblock %}
+
+{% block css %}
+<style>
+    .col md-2{
+    flex: 1 0 0%;
+    padding: 1rem 1rem;
+    max-height: 209px;
+    max-width: 200%;
+    }
+    #product_image{
+    max-width: 100%;
+    max-height: 100px;
+    }
+    img{
+    vertical-align: middle;
+    max-height: 424px;
+    max-width: 100%;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col md-2 id=prodcut_image">
+               <img src="/media/{{product.0.Product_image}}">
+            </div>
+             <div class="col md-2">
+                 <h3>{{product.0.Product_name}}</h3>
+                 <h5>M.R.P: &#x20B9;{{product.0.Product_price}} .inr</h5>
+                 <p>{{product.0.description}}</p>
+                 <div class="add-cart">
+                     <form action="/shop/cart" method="post">
+                         {% csrf_token %}
+                         <button type="submit" class="btn btn-primary cart" id="pr{{product.0.Product_id}}" data-bs-toggle="button" >Add to Cart</button>
+                     </form>
+                </div>
+                <div class="buy">
+                        <button type="submit" class="btn btn-primary" data-bs-toggle="button" autocomplete="off">Buy Now</button>
+                 </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %} 
+<script>
+    console.log("running");
+    // we target the button by its class name.
+    var addCart=document.getElementsByClassName('btn btn-primary cart')
+
+     
+    for(let i=0;i<addCart.length;i++){
+        //  this line run when the add to cart button is click.
+        addCart[i].addEventListener('click',function(){
+            var idstr=addCart[i].id;         // collect the data of product id in (string) by html id
+
+            var cart_no=localStorage.getItem(idstr);    //collect the data of localstroge by key product id.
+            console.log(cart_no);
+            cart_no=parseInt(cart_no);                // convert the vlaue in integer.
+            if(cart_no){      
+                //if value exits then increment on this key vlaue.                         
+                // localStorage.setItem(idstr,cart_no+1);
+                localStorage.setItem(idstr,JSON.stringify(product));
+            }
+            else{
+                // set the key vlaue in 1.
+                localStorage.setItem(idstr,JSON.stringify(product));
+            }        
+        });
+    }
+        let product={
+         name:'{{product.0.Product_name}}',
+         price:'{{product.0.Product_price}}' 
+        };
+    
+// for cart no show in cart icon bar. so this function run when the site in first is run.so we this function at basic.html page
+    // function onloadcart_no(){
+        
+    //     let totla_cart_items=localStorage.length;
+    //     if(totla_cart_items !=0 && totla_cart_items<9){
+    //         document.querySelector('.cart_count').textContent=totla_cart_items;
+    //     }
+    //     else if(totla_cart_items>9){
+
+    //         document.querySelector('.cart_count').textContent='9+';
+    //     }
+    //     else{
+    //         document.querySelector('.cart_count').textContent=0;
+    //     }
+    //     console.log(totla_cart_items);
+
+    // }
+    
+
+
+    // function cartItem(){
+    //     // var idstr=this.id.tostring();
+    //     // console.log(idstr)
+    //     // var cart_no=localStorage.getItem('cart');
+    //     // cart_no=parseInt(cart_no);
+    //     // if(cart_no){
+    //     //     localStorage.setItem('cart',cart_no+1);
+    //     // }
+    //     // else{
+    //     //     localStorage.setItem('cart',1);
+    //     // }
+    // }
+    </script>
+{%endblock%}

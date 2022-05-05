@@ -1,0 +1,45 @@
+{% extends 'Shop/basic.html' %}
+
+{% block title %}cart{% endblock %}
+
+{% block body %}
+    <h1>Shopping Cart</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-8">
+                <div class="row">
+                    <div class="col-4">
+                        <img src="..." class="img-thumbnail" alt="...">
+                    </div>
+                    <div class="col-6" id="cart_items">
+                        <h3>product name</h3>
+                        <h5>Deciription</h5>
+                        <h5>offer</h5>
+                        <div class="btn-group me-2" role="group" aria-label="First group">
+                            <button type="button" class="btn btn-outline-secondary">-</button>
+                            <button type="button" class="btn btn-outline-secondary">0</button>
+                            <button type="button" class="btn btn-outline-secondary">+</button>
+                        </div>
+                    </div>
+                    <div class="col-2">   
+                        Price 10
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-4">
+                <h3>Cart Total</h3>
+                <h4>Price(2 item)</h4>
+                <h4>Delivery Charges</h4>
+                <h2>Total Amount</h2>
+                <button type="button" class="btn btn-secondary btn-lg">Payment</button>               
+            </div>
+        </div>
+    </div>
+{% block js%}
+<script>
+    var cartItems=JSON.parse(localStorage.getItem('product_count'));
+    console.log(cartItems);
+</script>
+{%endblock%}
+{% endblock %}
